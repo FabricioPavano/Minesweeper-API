@@ -1,4 +1,8 @@
 class GamesController < ApplicationController
+
+
+  # TODO load CSRF Token in game creation form
+  skip_before_action :verify_authenticity_token
   before_action :set_game, only: [:show, :edit, :update, :destroy]
 
   # GET /games
@@ -24,6 +28,7 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
+
     @game = Game.new(game_params)
 
     respond_to do |format|
@@ -64,7 +69,7 @@ class GamesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_game
-      @game = Game.find(params[:id])
+      @game = Game.find_by_uuid(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
