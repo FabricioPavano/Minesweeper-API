@@ -45,8 +45,18 @@ class GamesController < ApplicationController
   # PATCH/PUT /games/1
   # PATCH/PUT /games/1.json
   def update
+
+
+    # Builds and serializes the state hash
+    box_objects = []
+    params[:state].each do |state_obj|
+      box_objects.push(state_obj.permit!.to_h)
+    end
+
+    serialized_state = YAML.dump(box_objects)
+
     respond_to do |format|
-      if @game.update(game_params)
+      if @game.update_column(:state, serialized_state)
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
         format.json { render :show, status: :ok, location: @game }
       else
@@ -74,6 +84,16 @@ class GamesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def game_params
-      params.require(:game).permit(:rows, :cols, :mines)
+      params
+        .require(:game)
+        .permit(:rows,
+                :cols,
+                :mines,
+                state: [
+                  :col,
+                  :row,
+                  :status,
+                  :has_mine
+                ])
     end
 end
