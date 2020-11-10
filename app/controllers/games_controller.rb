@@ -9,7 +9,8 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all.select(:updated_at, :created_at, :uuid).to_a
+    @games = Game.all.select(:updated_at, :created_at, :uuid)
+                 .where(user_id: current_user.id).to_a
     @games.select! { |game| game.created_at != game.updated_at }
   end
 
@@ -32,6 +33,8 @@ class GamesController < ApplicationController
   def create
 
     @game = Game.new(game_params)
+
+    @game.user_id = current_user.id
 
     respond_to do |format|
       if @game.save

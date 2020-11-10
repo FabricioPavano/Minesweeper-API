@@ -1,8 +1,7 @@
 class Game < ApplicationRecord
 
 	# Associations
-	has_many :boxes, :dependent => :destroy
-
+	belongs_to :user
 
 	# Hooks
 
