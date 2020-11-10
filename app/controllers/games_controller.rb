@@ -8,7 +8,8 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = Game.all.select(:updated_at, :created_at, :uuid).to_a
+    @games.select! { |game| game.created_at != game.updated_at }
   end
 
   # GET /games/1
@@ -45,8 +46,7 @@ class GamesController < ApplicationController
   # PATCH/PUT /games/1.json
   def update
 
-
-    # Builds and serializes the state hash
+    # Converts state hash into state array
     box_objects = []
     params[:state].each do |state_obj|
       box_objects.push(state_obj.permit!.to_h)
@@ -54,8 +54,10 @@ class GamesController < ApplicationController
 
     serialized_state = YAML.dump(box_objects)
 
+    @game.state = serialized_state
+
     respond_to do |format|
-      if @game.update_column(:state, serialized_state)
+      if @game.save
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
         format.json { render :show, status: :ok, location: @game }
       else
