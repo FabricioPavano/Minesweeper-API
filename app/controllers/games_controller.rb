@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
 
+  before_action :authenticate_user
 
   # TODO load CSRF Token in game creation form
   skip_before_action :verify_authenticity_token
