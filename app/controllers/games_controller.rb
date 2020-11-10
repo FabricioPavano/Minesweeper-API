@@ -29,6 +29,7 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
+
     @game = Game.new(game_params)
 
     respond_to do |format|
@@ -54,9 +55,11 @@ class GamesController < ApplicationController
 
     serialized_state = YAML.dump(box_objects)
 
+    # Updates some specific game parameters
     @game.state = serialized_state
     @game.mines_flagged = params[:game][:mines_flagged]
     @game.used_flags = params[:game][:used_flags]
+    @game.time_ellapsed = params[:game][:time_ellapsed]
 
 
     respond_to do |format|
