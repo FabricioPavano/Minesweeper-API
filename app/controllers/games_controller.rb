@@ -55,6 +55,9 @@ class GamesController < ApplicationController
     serialized_state = YAML.dump(box_objects)
 
     @game.state = serialized_state
+    @game.mines_flagged = params[:game][:mines_flagged]
+    @game.used_flags = params[:game][:used_flags]
+
 
     respond_to do |format|
       if @game.save
@@ -90,6 +93,8 @@ class GamesController < ApplicationController
         .permit(:rows,
                 :cols,
                 :mines,
+                :used_flags,
+                :mines_flagged,
                 state: [
                   :col,
                   :row,
