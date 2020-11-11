@@ -1,24 +1,17 @@
-# README
+# Minesweeper Ruby on Rails' API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Minesweeper Backend application
 
-Things you may want to cover:
+## Important Design considerations
 
-* Ruby version
+- API authentorization is handled using Jason Web Tokens (JWT) on every request
 
-* System dependencies
+- For improvements in performance and space, the state of each box is in a game is serialized and stored on a single column, this avoids the need to create hundreds of records for each box/tile in each game
 
-* Configuration
+- For further performance on the frontend, the number of adjacent mines for each box is precomputed before being sent to the client app.
 
-* Database creation
+- The whole API has been designed to respect Rails "convention over configuration" principles and best practices
 
-* Database initialization
 
-* How to run the test suite
+- Enjoy!
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
